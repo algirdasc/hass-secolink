@@ -3,5 +3,6 @@
   "content_in_root": false,
   "domains": ["alarm_control_panel"],  
   "homeassistant": "0.110.0",
-  "iot_class": "Cloud Push"
+  "iot_class": "Cloud Push",
+  "render_readme": true
 }
