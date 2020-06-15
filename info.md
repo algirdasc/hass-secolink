@@ -6,8 +6,9 @@
 | Name | Type | Default | Description |
 |------|:----:|:-------:|-------------|
 | name ***(required)*** | string | | Set a custom name which is displayed beside the icon.
-| listen_port ***(required)*** | integer | `8125` | Set port on which to listen for connection
-| clientid ***(required)*** | integer | `1234` | Set client id
+| listen_ip | string | `0.0.0.0` | Set a IP on which to listen for connection
+| listen_port | integer | `8125` | Set port on which to listen for connection
+| clientid | integer | `0000` | Set client id
 
 #### Example:
 ```yaml
