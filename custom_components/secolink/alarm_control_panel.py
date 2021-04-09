@@ -26,7 +26,7 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
     )])
 
 
-class SecolinkAlarm(alarm.AlarmControlPanel):
+class SecolinkAlarm(alarm.AlarmControlPanelEntity):
 
     def __init__(self, hass, config):
         self._name = str(config.get('name'))
