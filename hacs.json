@@ -4,5 +4,6 @@
   "domains": ["alarm_control_panel"],  
   "homeassistant": "0.110.0",
   "iot_class": "Cloud Push",
-  "render_readme": true
+  "render_readme": true,
+  "version": "1.0.0"
 }
