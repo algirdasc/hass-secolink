@@ -81,7 +81,7 @@ class SecolinkAlarm(alarm.AlarmControlPanelEntity):
         return SUPPORT_ALARM_ARM_AWAY | SUPPORT_ALARM_ARM_HOME | SUPPORT_ALARM_ARM_NIGHT
 
     @property
-    def device_state_attributes(self):
+    def extra_state_attributes(self):
         """Return the state attributes."""
         state_attr = {}
 
