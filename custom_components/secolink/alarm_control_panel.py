@@ -6,10 +6,11 @@ import threading
 import asyncio
 import datetime
 
-import homeassistant.components.alarm_control_panel as alarm
-from homeassistant.components.alarm_control_panel.const import (
-    SUPPORT_ALARM_ARM_AWAY, SUPPORT_ALARM_ARM_HOME, SUPPORT_ALARM_ARM_NIGHT
+from homeassistant.components.alarm_control_panel import (
+    AlarmControlPanelEntity,
+    AlarmControlPanelEntityFeature,
 )
+
 from homeassistant.const import (     
     STATE_ALARM_ARMED_AWAY, STATE_ALARM_ARMED_HOME, STATE_ALARM_ARMED_NIGHT,
     STATE_ALARM_DISARMED, STATE_ALARM_TRIGGERED, STATE_UNKNOWN)
@@ -26,7 +27,7 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
     )])
 
 
-class SecolinkAlarm(alarm.AlarmControlPanelEntity):
+class SecolinkAlarm(AlarmControlPanelEntity):
 
     def __init__(self, hass, config):
         self._name = str(config.get('name'))
@@ -58,7 +59,7 @@ class SecolinkAlarm(alarm.AlarmControlPanelEntity):
 
     @property
     def should_poll(self):
-        return False
+        return True
 
     @property
     def name(self):
@@ -78,7 +79,7 @@ class SecolinkAlarm(alarm.AlarmControlPanelEntity):
 
     @property
     def supported_features(self):
-        return SUPPORT_ALARM_ARM_AWAY | SUPPORT_ALARM_ARM_HOME | SUPPORT_ALARM_ARM_NIGHT
+        return AlarmControlPanelEntityFeature.ARM_HOME | AlarmControlPanelEntityFeature.ARM_HOME | AlarmControlPanelEntityFeature.ARM_NIGHT
 
     @property
     def extra_state_attributes(self):
@@ -93,25 +94,25 @@ class SecolinkAlarm(alarm.AlarmControlPanelEntity):
         state_attr['last_event_at'] = self._last_event_at
 
         return state_attr
+        
+    def update(self): 
+        pass
 
-    @asyncio.coroutine
-    def async_alarm_disarm(self, code=None):
+    def alarm_disarm(self, code=None):
         """Send disarm command."""
         _LOGGER.debug("alarm_disarm: %s", code)
         if code:
             _LOGGER.debug("alarm_disarm: sending %s1", str(code))
             pass
 
-    @asyncio.coroutine
-    def async_alarm_arm_away(self, code=None):
+    def alarm_arm_away(self, code=None):
         """Send arm away command."""
         _LOGGER.debug("alarm_arm_away: %s", code)
         if code:
             _LOGGER.debug("alarm_arm_away: sending %s2", str(code))
             pass
 
-    @asyncio.coroutine
-    def async_alarm_arm_home(self, code=None):
+    def alarm_arm_home(self, code=None):
         """Send arm home command."""
         _LOGGER.debug("alarm_arm_home: %s", code)
         if code:
@@ -197,8 +198,6 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                 self.server.secolink._last_event_area = event_area
                 self.server.secolink._last_event_zone = event_zone
                 self.server.secolink._last_event_qual = event_qual
-
-            self.server.secolink.async_schedule_update_ha_state()
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
